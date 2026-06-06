@@ -4,13 +4,17 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+lib/
+├── core/                  # Chứa cấu hình dùng chung toàn app
+│   ├── constants/         # Biến hằng số, màu sắc, font chữ
+│   ├── network/           # Cấu hình Dio Client, Supabase Client, Cache
+│   ├── theme/             # Cấu hình giao diện Sáng/Tối
+│   └── utils/             # Tiện ích định dạng tiền tệ, ngày tháng
+├── features/              # Chia theo từng tính năng của ứng dụng
+│   ├── meal_plan/         # Tính năng Gợi ý thực đơn & Khóa/Xoay
+│   │   ├── data/          # Models, Datasources, Repositories Impl
+│   │   ├── domain/        # Entities, Usecases, Repositories Interface
+│   │   └── presentation/  # BLoC, Pages, Widgets
+│   ├── shopping_list/     # Tính năng Danh sách đi chợ thông minh
+│   └── auth/              # Tính năng Đăng nhập
+└── main.dart              # Điểm khởi chạy ứng dụng
