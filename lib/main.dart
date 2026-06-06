@@ -1,3 +1,4 @@
+import 'package:an_gi/features/meal_plan/presentation/pages/meal_plan_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -36,14 +37,7 @@ class AnGiApp extends StatelessWidget {
       title: 'Ăn Gì?',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.green, useMaterial3: true),
-      home: const Scaffold(
-        body: Center(
-          child: Text(
-            'Ứng dụng Ăn Gì? sẵn sàng!',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
+      home: const MealPlanPage(),
     );
   }
 }
