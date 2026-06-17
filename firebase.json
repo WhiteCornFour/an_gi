@@ -1,0 +1,25 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "angiapp",
+          "appId": "1:881698898449:android:e4138b1f367090650927b0",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "angiapp",
+          "configurations": {
+            "android": "1:881698898449:android:e4138b1f367090650927b0",
+            "ios": "1:881698898449:ios:5605fa0e2e3f4ce00927b0",
+            "macos": "1:881698898449:ios:5605fa0e2e3f4ce00927b0",
+            "web": "1:881698898449:web:39b1834765b9ec2c0927b0",
+            "windows": "1:881698898449:web:e2820512f05027890927b0"
+          }
+        }
+      }
+    }
+  }
+}

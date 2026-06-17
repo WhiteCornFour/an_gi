@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "881698898449",
+    "project_id": "angiapp",
+    "storage_bucket": "angiapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881698898449:android:e4138b1f367090650927b0",
+        "android_client_info": {
+          "package_name": "com.fmstudio.an_gi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtmMgNzVJ8EcJ3Dvl13i6FNxxA0tXXvrc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
