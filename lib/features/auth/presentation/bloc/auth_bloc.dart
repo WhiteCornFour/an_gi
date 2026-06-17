@@ -12,6 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       super(AuthInitialState()) {
     on<RegisterSubmittedEvent>(_onRegisterSubmitted);
     on<LoginSubmittedEvent>(_onLoginSubmitted);
+    on<ForgotPasswordSubmittedEvent>(_onForgotPasswordSubmitted);
   }
 
   Future<void> _onRegisterSubmitted(
@@ -80,6 +81,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         errorKey = 'error_too_many_requests';
       }
 
+      emit(AuthFailureState(errorMessageKey: errorKey));
+    } catch (_) {
+      emit(const AuthFailureState(errorMessageKey: 'error_unknown'));
+    }
+  }
+
+  Future<void> _onForgotPasswordSubmitted(
+    ForgotPasswordSubmittedEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoadingState());
+    try {
+      await _authService.sendPasswordResetEmail(email: event.email.trim());
+      emit(const AuthForgotPasswordSuccessState());
+    } on FirebaseAuthException catch (e) {
+      String errorKey = 'error_unknown';
+      if (e.code == 'user-not-found' || e.code == 'invalid-email') {
+        errorKey =
+            'error_invalid_email'; // Sử dụng chung key báo lỗi email không hợp lệ/không tồn tại
+      } else if (e.code == 'too-many-requests') {
+        errorKey = 'error_too_many_requests';
+      }
       emit(AuthFailureState(errorMessageKey: errorKey));
     } catch (_) {
       emit(const AuthFailureState(errorMessageKey: 'error_unknown'));

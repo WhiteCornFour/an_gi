@@ -20,3 +20,9 @@ class LoginSubmittedEvent extends AuthEvent {
 
   const LoginSubmittedEvent({required this.email, required this.password});
 }
+
+class ForgotPasswordSubmittedEvent extends AuthEvent {
+  final String email;
+
+  const ForgotPasswordSubmittedEvent({required this.email});
+}

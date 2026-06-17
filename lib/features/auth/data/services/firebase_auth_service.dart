@@ -48,4 +48,14 @@ class FirebaseAuthService {
       throw Exception('Unknown auth error occurred');
     }
   }
+
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException {
+      rethrow;
+    } catch (e) {
+      throw Exception('Reset password failed: $e');
+    }
+  }
 }

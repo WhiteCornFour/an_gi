@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthState {
@@ -22,4 +21,8 @@ class AuthFailureState extends AuthState {
 class AuthLoginSuccessState extends AuthState {
   final User user;
   const AuthLoginSuccessState({required this.user});
+}
+
+class AuthForgotPasswordSuccessState extends AuthState {
+  const AuthForgotPasswordSuccessState();
 }
