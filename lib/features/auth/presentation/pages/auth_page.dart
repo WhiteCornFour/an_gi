@@ -1,16 +1,16 @@
 import 'package:an_gi/core/components/custom_text_field.dart';
-import 'package:an_gi/core/components/app_toast.dart'; // Bổ sung vũ khí Toast
+import 'package:an_gi/core/components/app_toast.dart';
 import 'package:an_gi/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:an_gi/features/auth/presentation/pages/register_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'; // Bổ sung để dùng BlocConsumer/context.read[cite: 4]
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../bloc/auth_bloc.dart'; // Bổ sung import AuthBloc hệ thống[cite: 4]
-import '../bloc/auth_event.dart'; // Bổ sung import AuthEvent hệ thống[cite: 4]
-import '../bloc/auth_state.dart'; // Bổ sung import AuthState hệ thống[cite: 4]
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
