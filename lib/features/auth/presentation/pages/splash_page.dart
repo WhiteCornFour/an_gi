@@ -1,11 +1,16 @@
-import 'package:an_gi/features/auth/presentation/pages/auth_page.dart';
-import 'package:an_gi/features/auth/presentation/pages/language_selection_page.dart';
-import 'package:an_gi/features/auth/presentation/pages/onboarding_page.dart';
-import 'package:an_gi/features/meal_plan/presentation/pages/meal_plan_page.dart';
+import 'package:an_gi/core/theme/app_colors.dart';
+import 'package:an_gi/core/theme/app_sizes.dart';
+import 'package:an_gi/core/utils/responsive_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:an_gi/core/app_config/app_config_cubit.dart'; // Đường dẫn tới Cubit của bạn
+import 'package:an_gi/core/app_config/app_config_cubit.dart';
+import '../../../../core/constants/app_strings.dart';
+import '../../../../core/localization/language_cubit.dart';
+import 'auth_page.dart';
+import 'language_selection_page.dart';
+import 'onboarding_page.dart';
+import '../../../meal_plan/presentation/pages/meal_plan_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -18,17 +23,12 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // Khởi động bộ đếm thời gian an toàn trước khi điều hướng
     _startSplashTimer();
   }
 
   void _startSplashTimer() {
-    // Chờ 2 giây để hiển thị thương hiệu ứng dụng "Ăn gì?" trước
     Future.delayed(const Duration(seconds: 2), () {
-      // Luôn kiểm tra xem Widget có còn hiển thị trên màn hình không (mounted) trước khi điều hướng
-      if (mounted) {
-        _handleNavigation();
-      }
+      if (mounted) _handleNavigation();
     });
   }
 
@@ -61,19 +61,30 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.green, // Màu nền thương hiệu "Ăn gì?"
+    final currentLang = context.watch<LanguageCubit>().state;
+
+    return Scaffold(
+      backgroundColor: AppColors.primary, // Ăn theo màu hệ thống dùng chung
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.restaurant_menu, size: 80, color: Colors.white),
-            SizedBox(height: 16),
+            Icon(
+              Icons.restaurant_menu,
+              size: context.scaleW(80),
+              color: Colors.white,
+            ),
+            SizedBox(height: context.scaleH(16)),
             Text(
-              'Ăn Gì?',
+              AppStrings.get(
+                'app_name',
+                currentLang,
+              ), // Đã phủ Localization cho tên app
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 28,
+                fontSize: AppSizes.fontHeader(
+                  context,
+                ), // Ép kích thước chữ theo chuẩn co giãn
                 fontWeight: FontWeight.bold,
               ),
             ),
