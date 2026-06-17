@@ -33,7 +33,8 @@ class AuthStrings {
       'empty_password': 'Mật khẩu không được để trống',
       //Register
       'register_title': 'Tạo Tài Khoản Mới',
-      'register_subtitle': 'Đăng ký ngay để trợ thủ "Ăn gì?" thiết kế thực đơn cá nhân hóa cho gia đình bạn!',
+      'register_subtitle':
+          'Đăng ký ngay để trợ thủ "Ăn gì?" thiết kế thực đơn cá nhân hóa cho gia đình bạn!',
       'name_label': 'Họ và tên',
       'name_hint': 'Nhập họ và tên của bạn...',
       'confirm_password_label': 'Xác nhận mật khẩu',
@@ -43,6 +44,13 @@ class AuthStrings {
       'login_now': 'Đăng nhập ngay',
       'empty_name': 'Họ và tên không được để trống',
       'password_not_match': 'Mật khẩu xác nhận không trùng khớp',
+      //Forgot passowrd
+      'forgot_title': 'Khôi Phục Mật Khẩu',
+      'forgot_subtitle':
+          'Đừng lo lắng! Hãy nhập email đã đăng ký, trợ thủ "Ăn gì?" sẽ gửi mã xác nhận để bạn tiếp tục vào bếp.',
+      'send_request_button': 'GỬI MÃ XÁC NHẬN',
+      'back_to_login': 'Quay lại đăng nhập',
+      'success_send_email': 'Liên kết khôi phục đã được gửi vào email của bạn!',
     },
     'en': {
       'app_name': 'What to Eat?',
@@ -88,6 +96,14 @@ class AuthStrings {
       'login_now': 'Log in now',
       'empty_name': 'Full name cannot be empty',
       'password_not_match': 'Confirm password does not match',
+      //Forgot passowrd
+      'forgot_title': 'Reset Password',
+      'forgot_subtitle':
+          'Don\'t worry! Enter your registered email, and "What to Eat?" assistant will send a reset link to get you back to the kitchen.',
+      'send_request_button': 'SEND RESET LINK',
+      'back_to_login': 'Back to login',
+      'success_send_email':
+          'A password reset link has been sent to your email!',
     },
   };
 }

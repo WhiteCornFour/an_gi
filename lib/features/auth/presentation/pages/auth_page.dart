@@ -1,4 +1,5 @@
 import 'package:an_gi/core/components/custom_text_field.dart';
+import 'package:an_gi/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:an_gi/features/auth/presentation/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_strings.dart';
@@ -161,7 +162,10 @@ class _ForgotPasswordButton extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: TextButton(
         onPressed: () {
-          // Xử lý quên mật khẩu
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const ForgotPasswordPage()),
+          );
         },
         child: Text(
           AppStrings.get(context, 'forgot_password'),
