@@ -1,6 +1,8 @@
-import 'package:an_gi/features/meal_plan/presentation/pages/meal_plan_page.dart';
+import 'package:an_gi/core/localization/language_cubit.dart';
+import 'package:an_gi/features/auth/presentation/pages/splash_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -33,11 +35,17 @@ class AnGiApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Ăn Gì?',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.green, useMaterial3: true),
-      home: const MealPlanPage(),
+    return BlocProvider(
+      create: (context) => LanguageCubit(),
+      child: MaterialApp(
+        title: 'Ăn Gì?',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+          useMaterial3: true,
+        ),
+        home: const SplashPage(),
+      ),
     );
   }
 }
