@@ -1,13 +1,15 @@
+import 'package:an_gi/features/auth/presentation/pages/auth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/components/custom_text_field.dart';
+import '../../../../core/components/app_toast.dart'; // Nạp vũ khí Toast mới
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../bloc/auth_bloc.dart'; // Import bộ não
-import '../bloc/auth_event.dart'; // Import sự kiện
-import '../bloc/auth_state.dart'; // Import trạng thái
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -37,7 +39,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _handleRegister() {
     if (_formKey.currentState!.validate()) {
-      // Kích nổ sự kiện gửi dữ liệu đăng ký sang AuthBloc xử lý [cite: 790]
       context.read<AuthBloc>().add(
         RegisterSubmittedEvent(
           name: _nameController.text,
@@ -45,33 +46,38 @@ class _RegisterPageState extends State<RegisterPage> {
           password: _passwordController.text,
         ),
       );
+    } else {
+      AppToast.show(
+        context,
+        message: AppStrings.get(context, 'warning_form_invalid'),
+        type: ToastType.warning,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Ứng dụng BlocConsumer đóng vai trò lắng nghe (Listener) để điều hướng/báo lỗi
-    // và vẽ lại giao diện (Builder) khi trạng thái thay đổi
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthFailureState) {
-          // Bắt lỗi ngầm, dịch ngôn ngữ tương ứng hiển thị lên SnackBar an toàn chống vỡ móng
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppStrings.get(context, state.errorMessageKey)),
-              backgroundColor: Colors.redAccent,
-            ),
+          // Ứng dụng AppToast báo lỗi từ Firebase bất đồng bộ cực kỳ xịn sò
+          AppToast.show(
+            context,
+            message: AppStrings.get(context, state.errorMessageKey),
+            type: ToastType.error,
           );
         }
         if (state is AuthRegisterSuccessState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Đăng ký thành công tài khoản Ăn Gì!'),
-              backgroundColor: AppColors.secondary,
-            ),
+          AppToast.show(
+            context,
+            message: AppStrings.get(context, 'register_success'),
+            type: ToastType.success,
           );
-          // Điều hướng sang trang chủ chính (UI Home Page) hoặc trang xác thực tiếp theo [cite: 388]
-          // Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+          // TODO: Đăng ký thành công chuyển sang home lun
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => HomePage()),
+          // );
         }
       },
       builder: (context, state) {
@@ -97,12 +103,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       _HeaderSection(context: context),
                       SizedBox(height: AppSizes.spaceL(context)),
 
+                      // ĐÃ SỬA: Xóa bỏ hoàn toàn "context: context," dư thừa
+                      // và liên kết cờ "enabled" chặn tương tác khi loading API
                       CustomTextField(
                         label: AppStrings.get(context, 'name_label'),
                         hint: AppStrings.get(context, 'name_hint'),
                         controller: _nameController,
                         prefixIcon: Icons.person_outline,
-                        enabled: !isLoading, // Khóa ô nhập khi đang kết nối API
+                        enabled: !isLoading,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return AppStrings.get(context, 'empty_name');
@@ -185,8 +193,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                       ),
                       SizedBox(height: AppSizes.spaceX(context)),
-
-                      // Hiển thị vòng Loading xoay tròn nếu đang bận gửi dữ liệu lên Firebase
                       isLoading
                           ? const Center(
                               child: CircularProgressIndicator(
@@ -199,7 +205,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               context: context,
                               onPressed: _handleRegister,
                             ),
-
                       SizedBox(height: AppSizes.spaceX(context)),
                       _LoginFooter(context: context),
                       SizedBox(height: AppSizes.spaceM(context)),
@@ -215,7 +220,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 }
 
-// --- CÁC LOCAL PRIVATE WIDGETS GIỮ NGUYÊN KHÔNG SỬA ĐỔI ---
+// --- CÁC LOCAL PRIVATE WIDGETS GIỮ NGUYÊN KHÔNG ĐỔI ---
 class _BackButton extends StatelessWidget {
   final BuildContext context;
   const _BackButton({required this.context});

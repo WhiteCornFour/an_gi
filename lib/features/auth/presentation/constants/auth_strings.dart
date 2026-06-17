@@ -52,6 +52,7 @@ class AuthStrings {
       'login_now': 'Đăng nhập ngay',
       'empty_name': 'Họ và tên không được để trống',
       'password_not_match': 'Mật khẩu xác nhận không trùng khớp',
+      'register_success': 'Đăng ký thành công tài khoản Ăn Gì!',
       //Forgot passowrd
       'forgot_title': 'Khôi Phục Mật Khẩu',
       'forgot_subtitle':
@@ -119,6 +120,7 @@ class AuthStrings {
       'login_now': 'Log in now',
       'empty_name': 'Full name cannot be empty',
       'password_not_match': 'Confirm password does not match',
+      'register_success': 'Successfully registered What to Eat account!',
       //Forgot passowrd
       'forgot_title': 'Reset Password',
       'forgot_subtitle':
