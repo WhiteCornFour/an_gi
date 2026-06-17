@@ -3,9 +3,9 @@ name: Flutter Code Quality & Test CI
 # Tự động kích hoạt khi có thay đổi trên nhánh main hoặc các nhánh tính năng
 on:
   push:
-    branches: [ main, master, "feature/**" ]
+    branches: [main, master, "feature/**"]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   analyze_and_test:
@@ -21,19 +21,29 @@ jobs:
       - name: Setup Java Environment
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          distribution: "zulu"
+          java-version: "17"
 
       # Bước 3: Thiết lập Flutter SDK (Tự động chọn phiên bản ổn định ổn định nhất)
       - name: Setup Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: "stable"
           cache: true # Bật cache để tăng tốc độ chạy CI cho các lần sau
 
       # Bước 4: Tải toàn bộ thư viện đã khai báo trong pubspec.yaml (Dio, BLoC, Supabase...)
       - name: Install Dependencies
         run: flutter pub get
+
+      # Tạo file firebase_options.dart giả lập để né lỗi biên dịch trên CI
+      - name: Create Mock Firebase Options for CI
+        run: |
+          cat <<EOF > lib/firebase_options.dart
+          // Mock file generated for CI purposes only
+          class DefaultFirebaseOptions {
+            static var currentPlatform = null;
+          }
+          EOF
 
       # Bước 5: KIỂM TRA THIẾT QUÂN LUẬT 1 - Kiểm tra định dạng code (Formatting)
       # Nếu code thụt lề sai, thiếu dấu phẩy chuẩn Flutter, CI sẽ BÁO ĐỎ lập tức.
