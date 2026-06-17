@@ -35,16 +35,6 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      # Tạo file firebase_options.dart giả lập để né lỗi biên dịch trên CI
-      - name: Create Mock Firebase Options for CI
-        run: |
-          cat <<EOF > lib/firebase_options.dart
-          // Mock file generated for CI purposes only
-          class DefaultFirebaseOptions {
-            static var currentPlatform = null;
-          }
-          EOF
-
       # Bước 5: KIỂM TRA THIẾT QUÂN LUẬT 1 - Kiểm tra định dạng code (Formatting)
       # Nếu code thụt lề sai, thiếu dấu phẩy chuẩn Flutter, CI sẽ BÁO ĐỎ lập tức.
       - name: Check Code Formatting
