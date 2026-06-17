@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:an_gi/core/theme/app_colors.dart';
-import 'package:an_gi/core/theme/app_sizes.dart';
+
 import 'package:an_gi/core/utils/responsive_helper.dart';
 import 'package:an_gi/core/app_config/app_config_cubit.dart';
 import '../../../../core/constants/app_strings.dart';
@@ -22,74 +21,64 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   double _loadingProgress = 0.0;
-  String _loadingStatus = '';
+  String _statusKey =
+      'splash_connecting'; // Lưu Key thay vì Hardcode String để chạy Localization
 
   @override
   void initState() {
     super.initState();
-    _initializeAppCoreFlow(); // Kích hoạt chuỗi kiểm tra hệ thống tự động
+    _initializeAppCoreFlow();
   }
 
-  /// Bộ điều tốc xử lý tuần tự toàn bộ các tác vụ hạ tầng trước khi vào app
   Future<void> _initializeAppCoreFlow() async {
+    final configCubit = context.read<AppConfigCubit>();
+    final auth = FirebaseAuth.instance;
+
     try {
-      // MỐC 1: Kiểm tra kết nối Internet (0% -> 20%)
-      _updateProgress(0.2, 'Checking network connection...');
-      await Future.delayed(
-        const Duration(milliseconds: 400),
-      ); // Tạo độ trễ mượt UX
+      // MỐC 1: Kiểm tra mạng (0% -> 20%)
+      _updateProgress(0.2, 'splash_connecting');
+      await Future.delayed(const Duration(milliseconds: 500));
       bool hasInternet = await _checkInternetConnection();
 
-      // MỐC 2: Kiểm tra kết nối dịch vụ Firebase (20% -> 40%)
-      _updateProgress(0.4, 'Initializing security gates...');
-      await Future.delayed(const Duration(milliseconds: 400));
-      final auth = FirebaseAuth.instance;
-
-      // MỐC 3: Đồng bộ trạng thái HydratedBLoC (40% -> 60%)
-      _updateProgress(0.6, 'Loading local configurations...');
+      // MỐC 2: Kiểm tra Firebase (20% -> 40%)
+      _updateProgress(0.4, 'splash_security');
       await Future.delayed(const Duration(milliseconds: 400));
 
-      if (!mounted) {
-        return;
-      }
-      final configState = context.read<AppConfigCubit>().state;
+      // MỐC 3: Cấu hình hệ thống (40% -> 60%)
+      _updateProgress(0.6, 'splash_sync');
+      await Future.delayed(const Duration(milliseconds: 400));
+      final configState = configCubit.state;
 
-      // MỐC 4: Giả lập Pre-fetch dữ liệu thực đơn để chạy Offline (60% -> 80%)
+      // MỐC 4: Tải dữ liệu đệm (60% -> 80%)
       _updateProgress(
         0.8,
-        hasInternet
-            ? 'Pre-fetching weekly recipes...'
-            : 'Working in offline mode...',
+        hasInternet ? 'splash_recipes_online' : 'splash_recipes_offline',
       );
       await Future.delayed(const Duration(milliseconds: 500));
 
-      // MỐC 5: Hoàn tất kiểm tra, chốt hạ mục tiêu (80% -> 100%)
-      _updateProgress(1.0, 'System ready!');
-      await Future.delayed(const Duration(milliseconds: 300));
+      // MỐC 5: Sẵn sàng (80% -> 100%)
+      _updateProgress(1.0, 'splash_ready');
+      await Future.delayed(const Duration(milliseconds: 400));
 
       if (mounted) _handleSmartNavigation(configState, auth.currentUser);
     } catch (e) {
-      // Cơ chế phòng vệ nếu Firebase hoặc hệ thống trục trặc, vẫn ép qua cổng để né màn hình treo
-      _updateProgress(1.0, 'Entering fallback mode...');
-      await Future.delayed(const Duration(milliseconds: 300));
+      _updateProgress(1.0, 'splash_fallback');
+      await Future.delayed(const Duration(milliseconds: 400));
       if (mounted) {
-        final configState = context.read<AppConfigCubit>().state;
-        _handleSmartNavigation(configState, FirebaseAuth.instance.currentUser);
+        _handleSmartNavigation(configCubit.state, auth.currentUser);
       }
     }
   }
 
-  /// Hàm cập nhật tiến trình chạy thanh phần trăm an toàn cho State
-  void _updateProgress(double progress, String status) {
+  void _updateProgress(double progress, String statusKey) {
     if (mounted) {
       setState(() {
         _loadingProgress = progress;
-        _loadingStatus = status;
+        _statusKey = statusKey;
       });
     }
   }
 
-  /// Kiểm tra thực tế xem thiết bị có internet thật hay không bằng cơ chế lookup domain
   Future<bool> _checkInternetConnection() async {
     try {
       final result = await InternetAddress.lookup(
@@ -97,11 +86,10 @@ class _SplashPageState extends State<SplashPage> {
       ).timeout(const Duration(seconds: 3));
       return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
     } catch (_) {
-      return false; // Trả về false nếu rớt mạng hoặc timeout mà không làm sập ứng dụng
+      return false;
     }
   }
 
-  /// Bộ điều hướng rẽ nhánh thông minh sau khi đã nạp đủ 100% tài nguyên
   void _handleSmartNavigation(dynamic configState, User? currentUser) {
     if (!configState.isLanguageSelected) {
       _navigateTo(const LanguageSelectionPage());
@@ -124,52 +112,92 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          AppColors.primary, // Ăn theo dải màu cốt lõi của thương hiệu
-      body: Center(
-        child: _SplashContent(
-          progress: _loadingProgress,
-          statusMessage: _loadingStatus,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFFF9233), // Cam hoàng hôn
+              Color(0xFFFF4B2B), // Đỏ cam đậm ẩm thực
+            ],
+          ),
+        ),
+        child: Center(
+          child: _SplashContent(
+            progress: _loadingProgress,
+            statusKey: _statusKey,
+          ),
         ),
       ),
     );
   }
 }
 
-/// Local Private Widget đóng gói giao diện hiển thị danh mục nhận diện và thanh tiến trình
 class _SplashContent extends StatelessWidget {
   final double progress;
-  final String statusMessage;
+  final String statusKey;
 
-  const _SplashContent({required this.progress, required this.statusMessage});
+  const _SplashContent({required this.progress, required this.statusKey});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: context.scaleW(40)),
+      padding: EdgeInsets.symmetric(horizontal: context.scaleW(45)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Spacer(flex: 3),
-          // Thân bài: Hiển thị biểu tượng ẩm thực co giãn chuẩn Responsive
-          Icon(
-            Icons.restaurant_menu,
-            size: context.scaleW(85),
-            color: Colors.white,
+          const Spacer(flex: 4),
+
+          // Container bọc Logo đổ bóng khối chuyên nghiệp
+          Container(
+            width: context.scaleW(135),
+            height: context.scaleW(135),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Color(
+                    0x1F000000,
+                  ), // Mức mờ 12% tĩnh (không dùng withOpacity)
+                  blurRadius: 24,
+                  offset: Offset(0, 12),
+                ),
+              ],
+            ),
+            padding: EdgeInsets.all(context.scaleW(16)),
+            child: Image.asset(
+              'assets/images/app_logo_transparent.png',
+              fit: BoxFit.contain,
+            ),
           ),
-          SizedBox(height: context.scaleH(16)),
+
+          SizedBox(height: context.scaleH(20)),
+
+          // Tên ứng dụng đồng bộ hóa hệ thống chữ
           Text(
             AppStrings.get(context, 'app_name'),
             style: TextStyle(
               color: Colors.white,
-              fontSize: AppSizes.fontHeader(context),
-              fontWeight: FontWeight.bold,
+              fontSize: context.scaleW(30),
+              fontWeight: FontWeight.w900,
               letterSpacing: 1.2,
+              shadows: const [
+                Shadow(
+                  color: Color(0x26000000), // Mức mờ 15% tĩnh
+                  offset: Offset(0, 3),
+                  blurRadius: 6,
+                ),
+              ],
             ),
           ),
-          const Spacer(flex: 2),
-          // Chân bài: Khu vực hiển thị thanh Loading % và Trạng thái tác vụ ngầm
-          _ProgressBarSection(progress: progress, statusMessage: statusMessage),
+
+          const Spacer(flex: 3),
+
+          // Khối hiển thị thanh trạng thái và tiến trình %
+          _ProgressBarSection(progress: progress, statusKey: statusKey),
+
           const Spacer(flex: 1),
         ],
       ),
@@ -177,56 +205,59 @@ class _SplashContent extends StatelessWidget {
   }
 }
 
-/// Widget con xử lý giao diện thanh phần trăm và dòng văn bản trạng thái ngầm
 class _ProgressBarSection extends StatelessWidget {
   final double progress;
-  final String statusMessage;
+  final String statusKey;
 
-  const _ProgressBarSection({
-    required this.progress,
-    required this.statusMessage,
-  });
+  const _ProgressBarSection({required this.progress, required this.statusKey});
 
   @override
   Widget build(BuildContext context) {
-    // Ép cứng mã màu Hex ARGB tĩnh thay cho withOpacity để bảo toàn hiệu năng GPU 120 FPS
-    final Color trackColor = const Color(0x33FFFFFF); // Trắng trong suốt 20%
     final int percentage = (progress * 100).toInt();
 
     return Column(
       children: [
-        // Hiển thị số phần trăm chạy động
         Text(
           '$percentage%',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: context.scaleW(16),
-            fontWeight: FontWeight.w600,
+          style: const TextStyle(
+            color: Color(0xE6FFFFFF), // Mức mờ 90% tĩnh
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: context.scaleH(10)),
-        // Thanh LinearProgressIndicator có bo góc mềm mại
+        SizedBox(height: context.scaleH(8)),
+
+        // Thanh tiến trình Linear mảnh, bo góc hiện đại
         ClipRRect(
-          borderRadius: BorderRadius.circular(context.scaleW(10)),
-          child: LinearProgressIndicator(
-            value: progress,
-            backgroundColor: trackColor,
-            valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-            minHeight: context.scaleH(6),
+          borderRadius: BorderRadius.circular(10),
+          child: SizedBox(
+            height: context.scaleH(4),
+            width: context.scaleW(180),
+            child: LinearProgressIndicator(
+              value: progress,
+              backgroundColor: const Color(0x40FFFFFF), // Mức mờ 25% tĩnh
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
           ),
         ),
         SizedBox(height: context.scaleH(12)),
-        // Dòng chữ thông báo tác vụ ngầm nhỏ tinh tế ở dưới cùng
-        Text(
-          statusMessage,
-          style: TextStyle(
-            color: const Color(
-              0xB3FFFFFF,
-            ), // Trắng trong suốt 70% giúp mắt dễ điều tiết
-            fontSize: context.scaleW(13),
-            fontStyle: FontStyle.italic,
+
+        // Hiệu ứng đổi chữ mượt mà và gọi dữ liệu qua Localization hệ thống
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          child: Text(
+            AppStrings.get(
+              context,
+              statusKey,
+            ), // ✅ ĐÃ LÀM SẠCH: Đưa chuỗi qua bộ dịch tự động theo Key
+            key: ValueKey<String>(statusKey),
+            style: const TextStyle(
+              color: Color(0xCCFFFFFF), // Mức mờ 80% tĩnh
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
         ),
       ],
     );
