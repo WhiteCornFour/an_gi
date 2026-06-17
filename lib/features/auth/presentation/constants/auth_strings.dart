@@ -33,7 +33,7 @@ class AuthStrings {
       'email_hint': 'Nhập email của bạn...',
       'password_label': 'Mật khẩu',
       'password_hint': 'Nhập mật khẩu của bạn...',
-      'login_button': 'ĐĂNG NHẬP CHẮC CHẮN',
+      'login_button': 'ĐĂNG NHẬP NGAY',
       'forgot_password': 'Quên mật khẩu?',
       'no_account': 'Chưa có tài khoản? ',
       'register_now': 'Đăng ký ngay',
@@ -52,13 +52,26 @@ class AuthStrings {
       'login_now': 'Đăng nhập ngay',
       'empty_name': 'Họ và tên không được để trống',
       'password_not_match': 'Mật khẩu xác nhận không trùng khớp',
-      //Forgot passowrd
+      'register_success': 'Đăng ký thành công tài khoản Ăn Gì!',
+      //Forgot password
       'forgot_title': 'Khôi Phục Mật Khẩu',
       'forgot_subtitle':
           'Đừng lo lắng! Hãy nhập email đã đăng ký, trợ thủ "Ăn gì?" sẽ gửi mã xác nhận để bạn tiếp tục vào bếp.',
-      'send_request_button': 'GỬI MÃ XÁC NHẬN',
+      'send_request_button': 'LIÊN KẾT KHÔI PHỤC',
       'back_to_login': 'Quay lại đăng nhập',
       'success_send_email': 'Liên kết khôi phục đã được gửi vào email của bạn!',
+      //Errors
+      'error_email_already_in_use':
+          'Email này đã được đăng ký bởi tài khoản khác.',
+      'error_invalid_email': 'Địa chỉ email không đúng định dạng.',
+      'error_weak_password':
+          'Mật khẩu quá yếu, vui lòng chọn mật khẩu mạnh hơn.',
+      'error_unknown': 'Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.',
+      //--
+      'error_invalid_credential': 'Email hoặc mật khẩu không chính xác.',
+      'error_user_disabled': 'Tài khoản này đã bị khóa khỏi hệ thống.',
+      'error_too_many_requests':
+          'Quá nhiều yêu cầu đăng nhập sai. Vui lòng thử lại sau.',
     },
     'en': {
       'app_name': 'What to Eat?',
@@ -112,7 +125,8 @@ class AuthStrings {
       'login_now': 'Log in now',
       'empty_name': 'Full name cannot be empty',
       'password_not_match': 'Confirm password does not match',
-      //Forgot passowrd
+      'register_success': 'Successfully registered What to Eat account!',
+      //Forgot password
       'forgot_title': 'Reset Password',
       'forgot_subtitle':
           'Don\'t worry! Enter your registered email, and "What to Eat?" assistant will send a reset link to get you back to the kitchen.',
@@ -120,6 +134,17 @@ class AuthStrings {
       'back_to_login': 'Back to login',
       'success_send_email':
           'A password reset link has been sent to your email!',
+      //Errors
+      'error_email_already_in_use':
+          'This email is already registered by another account.',
+      'error_invalid_email': 'The email address is badly formatted.',
+      'error_weak_password': 'The password is too weak.',
+      'error_unknown': 'An unknown error occurred. Please try again later.',
+      //--
+      'error_invalid_credential': 'Incorrect email or password.',
+      'error_user_disabled': 'This user account has been disabled.',
+      'error_too_many_requests':
+          'Too many failed login attempts. Please try again later.',
     },
   };
 }
