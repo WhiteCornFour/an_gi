@@ -38,7 +38,7 @@ jobs:
       # Bước 5: KIỂM TRA THIẾT QUÂN LUẬT 1 - Kiểm tra định dạng code (Formatting)
       # Nếu code thụt lề sai, thiếu dấu phẩy chuẩn Flutter, CI sẽ BÁO ĐỎ lập tức.
       - name: Check Code Formatting
-        run: flutter format --set-exit-if-changed lib/
+        run: dart format --output=none --set-exit-if-changed lib/
 
       # Bước 6: KIỂM TRA THIẾT QUÂN LUẬT 2 - Phân tích cú pháp (Linter & Static Analysis)
       # Phát hiện các lỗi như: Hardcoded string (chưa qua Locale), quên bóc tách widget, lỗi logic ẩn.
