@@ -17,6 +17,14 @@ class AuthStrings {
       'onboarding_title_3': 'Đi Chợ Thông Minh',
       'onboarding_desc_3':
           'Tự động gom và cộng dồn nguyên liệu thành danh sách checklist tiện lợi. Đặc biệt, mất mạng ở chợ app vẫn chạy mượt mà.',
+      //Splash
+      "splash_connecting": "Đang kết nối máy chủ...",
+      "splash_security": "Bảo mật thông tin...",
+      "splash_sync": "Đồng bộ cài đặt...",
+      "splash_recipes_online": "Chuẩn bị thực đơn hôm nay...",
+      "splash_recipes_offline": "Chế độ ngoại tuyến...",
+      "splash_ready": "Xin mời vào bếp!",
+      "splash_fallback": "Đang vào ứng dụng...",
       //Login
       'login_title': 'Chào Mừng Trở Lại!',
       'login_subtitle':
@@ -69,6 +77,14 @@ class AuthStrings {
       'onboarding_title_3': 'Smart Shopping List',
       'onboarding_desc_3':
           'Automatically gather and aggregate ingredients into a convenient checklist. Works flawlessly even offline.',
+      //Splash
+      "splash_connecting": "Connecting to server...",
+      "splash_security": "Securing data...",
+      "splash_sync": "Syncing configurations...",
+      "splash_recipes_online": "Preparing today's menu...",
+      "splash_recipes_offline": "Offline mode...",
+      "splash_ready": "Welcome to kitchen!",
+      "splash_fallback": "Entering application...",
       //Login
       'login_title': 'Welcome Back!',
       'login_subtitle':
