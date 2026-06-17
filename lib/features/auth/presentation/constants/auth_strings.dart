@@ -67,6 +67,11 @@ class AuthStrings {
       'error_weak_password':
           'Mật khẩu quá yếu, vui lòng chọn mật khẩu mạnh hơn.',
       'error_unknown': 'Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.',
+      //--
+      'error_invalid_credential': 'Email hoặc mật khẩu không chính xác.',
+      'error_user_disabled': 'Tài khoản này đã bị khóa khỏi hệ thống.',
+      'error_too_many_requests':
+          'Quá nhiều yêu cầu đăng nhập sai. Vui lòng thử lại sau.',
     },
     'en': {
       'app_name': 'What to Eat?',
@@ -135,6 +140,11 @@ class AuthStrings {
       'error_invalid_email': 'The email address is badly formatted.',
       'error_weak_password': 'The password is too weak.',
       'error_unknown': 'An unknown error occurred. Please try again later.',
+      //--
+      'error_invalid_credential': 'Incorrect email or password.',
+      'error_user_disabled': 'This user account has been disabled.',
+      'error_too_many_requests':
+          'Too many failed login attempts. Please try again later.',
     },
   };
 }

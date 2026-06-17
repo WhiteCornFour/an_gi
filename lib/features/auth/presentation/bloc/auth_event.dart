@@ -1,4 +1,3 @@
-
 abstract class AuthEvent {
   const AuthEvent();
 }
@@ -13,4 +12,11 @@ class RegisterSubmittedEvent extends AuthEvent {
     required this.email,
     required this.password,
   });
+}
+
+class LoginSubmittedEvent extends AuthEvent {
+  final String email;
+  final String password;
+
+  const LoginSubmittedEvent({required this.email, required this.password});
 }

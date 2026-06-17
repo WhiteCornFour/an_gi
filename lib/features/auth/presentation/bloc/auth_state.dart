@@ -18,3 +18,8 @@ class AuthFailureState extends AuthState {
   final String errorMessageKey;
   const AuthFailureState({required this.errorMessageKey});
 }
+
+class AuthLoginSuccessState extends AuthState {
+  final User user;
+  const AuthLoginSuccessState({required this.user});
+}

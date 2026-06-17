@@ -11,6 +11,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     : _authService = authService,
       super(AuthInitialState()) {
     on<RegisterSubmittedEvent>(_onRegisterSubmitted);
+    on<LoginSubmittedEvent>(_onLoginSubmitted);
   }
 
   Future<void> _onRegisterSubmitted(
@@ -40,6 +41,45 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else if (e.code == 'weak-password') {
         errorKey = 'error_weak_password';
       }
+      emit(AuthFailureState(errorMessageKey: errorKey));
+    } catch (_) {
+      emit(const AuthFailureState(errorMessageKey: 'error_unknown'));
+    }
+  }
+
+  Future<void> _onLoginSubmitted(
+    LoginSubmittedEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoadingState());
+    try {
+      final userCredential = await _authService.signInWithEmailAndPassword(
+        email: event.email,
+        password: event.password,
+      );
+
+      if (userCredential.user != null) {
+        emit(AuthLoginSuccessState(user: userCredential.user!));
+      } else {
+        emit(const AuthFailureState(errorMessageKey: 'error_unknown'));
+      }
+    } on FirebaseAuthException catch (e) {
+      // Ánh xạ các mã lỗi xác thực đặc trưng từ hệ sinh thái Firebase Auth[cite: 8]
+      String errorKey = 'error_unknown';
+
+      if (e.code == 'user-not-found' ||
+          e.code == 'wrong-password' ||
+          e.code == 'invalid-credential') {
+        // Có thể dùng chung một key báo sai thông tin tài khoản hoặc bổ sung vào auth_strings nếu cần
+        errorKey = 'error_invalid_credential';
+      } else if (e.code == 'invalid-email') {
+        errorKey = 'error_invalid_email';
+      } else if (e.code == 'user-disabled') {
+        errorKey = 'error_user_disabled';
+      } else if (e.code == 'too-many-requests') {
+        errorKey = 'error_too_many_requests';
+      }
+
       emit(AuthFailureState(errorMessageKey: errorKey));
     } catch (_) {
       emit(const AuthFailureState(errorMessageKey: 'error_unknown'));
