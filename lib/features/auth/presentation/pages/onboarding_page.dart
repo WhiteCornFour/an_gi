@@ -1,3 +1,4 @@
+import 'package:an_gi/core/app_config/app_config_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_strings.dart';
@@ -37,9 +38,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 
   void _navigateToAuth() {
-    Navigator.of(
+    // Đánh dấu đã xem xong Onboarding
+    context.read<AppConfigCubit>().setOnboardingCompleted();
+
+    // Sau đó mới điều hướng sang màn hình Đăng nhập (AuthPage)
+    Navigator.pushReplacement(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => const AuthPage()));
+      MaterialPageRoute(builder: (context) => const AuthPage()),
+    );
   }
 
   @override
@@ -109,14 +115,8 @@ class _OnboardingSlider extends StatelessWidget {
       itemCount: configs.length,
       itemBuilder: (context, index) {
         final config = configs[index];
-        final title = AppStrings.get(
-          'onboarding_title_${index + 1}',
-          currentLang,
-        );
-        final desc = AppStrings.get(
-          'onboarding_desc_${index + 1}',
-          currentLang,
-        );
+        final title = AppStrings.get(context, 'onboarding_title_${index + 1}');
+        final desc = AppStrings.get(context, 'onboarding_desc_${index + 1}');
 
         return Container(
           decoration: BoxDecoration(
@@ -217,7 +217,7 @@ class _SkipButton extends StatelessWidget {
             fontSize: context.scaleSp(15),
           ),
         ),
-        child: Text(AppStrings.get('skip', currentLang)),
+        child: Text(AppStrings.get(context, 'skip')),
       ),
     );
   }
@@ -302,7 +302,7 @@ class _NavigationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLast = currentPage == configs.length - 1;
-    final label = AppStrings.get(isLast ? 'start_now' : 'next', currentLang);
+    final label = AppStrings.get(context, isLast ? 'start_now' : 'next');
 
     return ElevatedButton(
       onPressed: onPressed,

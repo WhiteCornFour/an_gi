@@ -1,3 +1,4 @@
+import 'package:an_gi/core/app_config/app_config_cubit.dart';
 import 'package:an_gi/core/localization/language_cubit.dart';
 import 'package:an_gi/features/auth/presentation/pages/splash_page.dart';
 import 'package:flutter/foundation.dart';
@@ -35,16 +36,14 @@ class AnGiApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LanguageCubit(),
-      child: MaterialApp(
-        title: 'Ăn Gì?',
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LanguageCubit>(create: (context) => LanguageCubit()),
+        BlocProvider<AppConfigCubit>(create: (context) => AppConfigCubit()),
+      ],
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-          useMaterial3: true,
-        ),
-        home: const SplashPage(),
+        home: SplashPage(),
       ),
     );
   }

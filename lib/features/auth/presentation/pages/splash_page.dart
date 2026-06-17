@@ -1,11 +1,15 @@
+import 'package:an_gi/core/theme/app_colors.dart';
+import 'package:an_gi/core/theme/app_sizes.dart';
+import 'package:an_gi/core/utils/responsive_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:an_gi/core/app_config/app_config_cubit.dart';
 import '../../../../core/constants/app_strings.dart';
-import '../../../../core/localization/language_cubit.dart';
-import '../../../../core/utils/responsive_helper.dart';
-import '../../../meal_plan/presentation/pages/meal_plan_page.dart';
+import 'auth_page.dart';
 import 'language_selection_page.dart';
+import 'onboarding_page.dart';
+import '../../../meal_plan/presentation/pages/meal_plan_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -18,103 +22,71 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    _checkAuthAndNavigate();
+    _startSplashTimer();
   }
 
-  Future<void> _checkAuthAndNavigate() async {
-    await Future.delayed(const Duration(seconds: 2));
-    if (!mounted) return;
+  void _startSplashTimer() {
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) _handleNavigation();
+    });
+  }
 
-    final session = Supabase.instance.client.auth.currentSession;
+  void _handleNavigation() {
+    final configState = context.read<AppConfigCubit>().state;
+    final supabaseSession = Supabase.instance.client.auth.currentSession;
 
-    if (session != null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const MealPlanPage()),
+    if (!configState.isLanguageSelected) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LanguageSelectionPage()),
+      );
+    } else if (!configState.isOnboardingCompleted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const OnboardingPage()),
+      );
+    } else if (supabaseSession == null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const AuthPage()),
       );
     } else {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const LanguageSelectionPage()),
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MealPlanPage()),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentLang = context.watch<LanguageCubit>().state;
-
     return Scaffold(
-      backgroundColor: Colors.green.shade700,
+      backgroundColor: AppColors.primary, // Ăn theo màu hệ thống dùng chung
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const _SplashLogo(),
-            SizedBox(height: context.scaleH(24)),
-            _SplashTitle(currentLang: currentLang),
-            SizedBox(height: context.scaleH(8)),
-            _SplashSlogan(currentLang: currentLang),
-            SizedBox(height: context.scaleH(48)),
-            const CircularProgressIndicator(color: Colors.white),
+            Icon(
+              Icons.restaurant_menu,
+              size: context.scaleW(80),
+              color: Colors.white,
+            ),
+            SizedBox(height: context.scaleH(16)),
+            Text(
+              AppStrings.get(
+                context,
+                'app_name',
+              ), // Đã phủ Localization cho tên app
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: AppSizes.fontHeader(
+                  context,
+                ), // Ép kích thước chữ theo chuẩn co giãn
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// --- WIDGET THÀNH PHẦN: LOGO ---
-class _SplashLogo extends StatelessWidget {
-  const _SplashLogo();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(context.scaleW(20)),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-      ),
-      child: Icon(
-        Icons.restaurant_menu,
-        size: context.scaleW(80),
-        color: Colors.green.shade700,
-      ),
-    );
-  }
-}
-
-// --- WIDGET THÀNH PHẦN: TÊN APP ---
-class _SplashTitle extends StatelessWidget {
-  final String currentLang;
-  const _SplashTitle({required this.currentLang});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      AppStrings.get('app_name', currentLang),
-      style: TextStyle(
-        fontSize: context.scaleSp(32),
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-        letterSpacing: 2,
-      ),
-    );
-  }
-}
-
-// --- WIDGET THÀNH PHẦN: SLOGAN ---
-class _SplashSlogan extends StatelessWidget {
-  final String currentLang;
-  const _SplashSlogan({required this.currentLang});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      AppStrings.get('splash_slogan', currentLang),
-      style: TextStyle(
-        fontSize: context.scaleSp(16),
-        color: Colors.green.shade100,
-        fontStyle: FontStyle.italic,
       ),
     );
   }
