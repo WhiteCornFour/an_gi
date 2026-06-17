@@ -1,3 +1,4 @@
+import 'package:an_gi/core/app_config/app_config_cubit.dart';
 import 'package:an_gi/features/auth/presentation/pages/onboarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +42,11 @@ class _HeaderSection extends StatelessWidget {
     final currentLang = context.watch<LanguageCubit>().state;
     return Column(
       children: [
-        Icon(Icons.translate_rounded, size: context.scaleW(64), color: Colors.green.shade700),
+        Icon(
+          Icons.translate_rounded,
+          size: context.scaleW(64),
+          color: Colors.green.shade700,
+        ),
         SizedBox(height: context.scaleH(16)),
         Text(
           AppStrings.get('select_language', currentLang),
@@ -126,13 +131,29 @@ class _LanguageCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: TextStyle(fontSize: context.scaleSp(16), fontWeight: FontWeight.bold)),
-                Text(subtitle, style: TextStyle(fontSize: context.scaleSp(12), color: Colors.grey)),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: context.scaleSp(16),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: context.scaleSp(12),
+                    color: Colors.grey,
+                  ),
+                ),
               ],
             ),
             const Spacer(),
             if (isSelected)
-              Icon(Icons.check_circle_rounded, color: Colors.green.shade700, size: context.scaleW(24)),
+              Icon(
+                Icons.check_circle_rounded,
+                color: Colors.green.shade700,
+                size: context.scaleW(24),
+              ),
           ],
         ),
       ),
@@ -149,19 +170,29 @@ class _ConfirmButton extends StatelessWidget {
     final currentLang = context.watch<LanguageCubit>().state;
     return ElevatedButton(
       onPressed: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const OnboardingPage()),
+        // Đánh dấu đã chọn ngôn ngữ thành công
+        context.read<AppConfigCubit>().setLanguageSelected();
+
+        // Sau đó mới điều hướng sang Onboarding Page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const OnboardingPage()),
         );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.green.shade700,
         foregroundColor: Colors.white,
         padding: EdgeInsets.symmetric(vertical: context.scaleH(16)),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.scaleW(28))),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(context.scaleW(28)),
+        ),
       ),
       child: Text(
         AppStrings.get('continue', currentLang),
-        style: TextStyle(fontSize: context.scaleSp(16), fontWeight: FontWeight.bold),
+        style: TextStyle(
+          fontSize: context.scaleSp(16),
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

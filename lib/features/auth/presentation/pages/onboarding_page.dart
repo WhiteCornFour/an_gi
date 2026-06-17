@@ -1,3 +1,4 @@
+import 'package:an_gi/core/app_config/app_config_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_strings.dart';
@@ -37,9 +38,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 
   void _navigateToAuth() {
-    Navigator.of(
+    // Đánh dấu đã xem xong Onboarding
+    context.read<AppConfigCubit>().setOnboardingCompleted();
+
+    // Sau đó mới điều hướng sang màn hình Đăng nhập (AuthPage)
+    Navigator.pushReplacement(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => const AuthPage()));
+      MaterialPageRoute(builder: (context) => const AuthPage()),
+    );
   }
 
   @override
