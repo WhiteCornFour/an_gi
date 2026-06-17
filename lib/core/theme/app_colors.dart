@@ -1,33 +1,24 @@
+// lib/core/theme/app_colors.dart
+
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // 1. Màu chủ đạo (Primary): Sắc xanh ngọc/xanh lá tươi của rau củ tươi, tạo cảm giác an toàn, sạch sẽ
-  static const Color primary = Color(
-    0xFF2E7D32,
-  ); // Xanh lá đậm chuẩn ISO, tương phản cực tốt với chữ trắng
-  static const Color primaryLight = Color(
-    0xFFE8F5E9,
-  ); // Nền xanh nhạt dùng cho các thẻ Card món ăn
+  // Màu chủ đạo kích thích vị giác (Cam ấm / Xanh lá tươi)
+  static const Color primary = Color(0xFFE65100);
+  static const Color secondary = Color(0xFF2E7D32);
+  static const Color background = Color(0xFFF9F9F9);
 
-  // 2. Màu điểm nhấn (Accent): Màu cam ấm của ngọn lửa bếp và món kho, kích thích thèm ăn, dùng cho nút "XOAY MÓN"
-  static const Color accent = Color(
-    0xFFE65100,
-  ); // Cam đậm quyến rũ, cực bắt mắt thu hút hành động
+  // Chữ & Văn bản độ tương phản cao
+  static const Color textPrimary = Color(0xFF1A1A1A);
+  static const Color textSecondary = Color(0xFF757575);
 
-  // 3. Hệ chữ (Typography): Phải dùng màu gần như đen tuyệt đối cho người lớn tuổi dễ đọc
-  static const Color textPrimary = Color(
-    0xFF1A1A1A,
-  ); // Chữ chính (Tên món, tiêu đề)
-  static const Color textSecondary = Color(
-    0xFF555555,
-  ); // Chữ phụ (Định lượng, nguyên liệu)
+  // --- GIẢI PHÁP THAY THẾ WITHOopacity ---
+  // Thay vì AppColors.primary.withOpacity(0.1), ta dùng mã Hex mã hóa sẵn 10% Alpha (Đầu là 1A)
+  static const Color primaryOpacity10 = Color(0x1AE65100);
 
-  // 4. Màu nền và trạng thái
-  static const Color background = Color(
-    0xFFFAFAFA,
-  ); // Trắng kem siêu dịu mắt khi đứng trong bếp tối
-  static const Color border = Color(0xFFE0E0E0);
-  static const Color error = Color(
-    0xFFC62828,
-  ); // Đỏ cảnh báo (khi hết tiền túi hoặc món trùng)
+  // Thay vì AppColors.textSecondary.withOpacity(0.2) cho Border, ta dùng mã Hex 20% Alpha (Đầu là 33)
+  static const Color borderLight = Color(0x33757575);
+
+  // Thay vì AppColors.textSecondary.withOpacity(0.6) cho HintText, ta dùng mã Hex 60% Alpha (Đầu là 99)
+  static const Color textHint = Color(0x99757575);
 }

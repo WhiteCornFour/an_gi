@@ -115,14 +115,8 @@ class _OnboardingSlider extends StatelessWidget {
       itemCount: configs.length,
       itemBuilder: (context, index) {
         final config = configs[index];
-        final title = AppStrings.get(
-          'onboarding_title_${index + 1}',
-          currentLang,
-        );
-        final desc = AppStrings.get(
-          'onboarding_desc_${index + 1}',
-          currentLang,
-        );
+        final title = AppStrings.get(context, 'onboarding_title_${index + 1}');
+        final desc = AppStrings.get(context, 'onboarding_desc_${index + 1}');
 
         return Container(
           decoration: BoxDecoration(
@@ -223,7 +217,7 @@ class _SkipButton extends StatelessWidget {
             fontSize: context.scaleSp(15),
           ),
         ),
-        child: Text(AppStrings.get('skip', currentLang)),
+        child: Text(AppStrings.get(context, 'skip')),
       ),
     );
   }
@@ -308,7 +302,7 @@ class _NavigationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLast = currentPage == configs.length - 1;
-    final label = AppStrings.get(isLast ? 'start_now' : 'next', currentLang);
+    final label = AppStrings.get(context, isLast ? 'start_now' : 'next');
 
     return ElevatedButton(
       onPressed: onPressed,

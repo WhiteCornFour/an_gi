@@ -1,3 +1,4 @@
+import 'package:an_gi/core/utils/responsive_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:an_gi/core/theme/app_colors.dart';
 import 'package:an_gi/core/theme/app_sizes.dart';
@@ -38,4 +39,13 @@ class AppTextStyles {
     fontSize: AppSizes.fontCaption(context),
     color: AppColors.textSecondary,
   );
+
+  static TextStyle heading1(BuildContext context) =>
+      TextStyle(fontSize: context.scaleSp(28), fontWeight: FontWeight.bold);
+
+  static TextStyle bodyMedium(BuildContext context) =>
+      TextStyle(fontSize: context.scaleSp(16), fontWeight: FontWeight.normal);
+
+  static TextStyle bodyBold(BuildContext context) =>
+      TextStyle(fontSize: context.scaleSp(16), fontWeight: FontWeight.bold);
 }

@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:an_gi/core/app_config/app_config_cubit.dart';
 import '../../../../core/constants/app_strings.dart';
-import '../../../../core/localization/language_cubit.dart';
 import 'auth_page.dart';
 import 'language_selection_page.dart';
 import 'onboarding_page.dart';
@@ -61,8 +60,6 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    final currentLang = context.watch<LanguageCubit>().state;
-
     return Scaffold(
       backgroundColor: AppColors.primary, // Ăn theo màu hệ thống dùng chung
       body: Center(
@@ -77,8 +74,8 @@ class _SplashPageState extends State<SplashPage> {
             SizedBox(height: context.scaleH(16)),
             Text(
               AppStrings.get(
+                context,
                 'app_name',
-                currentLang,
               ), // Đã phủ Localization cho tên app
               style: TextStyle(
                 color: Colors.white,

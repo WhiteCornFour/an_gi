@@ -39,7 +39,6 @@ class _HeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentLang = context.watch<LanguageCubit>().state;
     return Column(
       children: [
         Icon(
@@ -49,7 +48,7 @@ class _HeaderSection extends StatelessWidget {
         ),
         SizedBox(height: context.scaleH(16)),
         Text(
-          AppStrings.get('select_language', currentLang),
+          AppStrings.get(context, 'select_language'),
           style: TextStyle(
             fontSize: context.scaleSp(24),
             fontWeight: FontWeight.bold,
@@ -167,7 +166,6 @@ class _ConfirmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentLang = context.watch<LanguageCubit>().state;
     return ElevatedButton(
       onPressed: () {
         // Đánh dấu đã chọn ngôn ngữ thành công
@@ -188,7 +186,7 @@ class _ConfirmButton extends StatelessWidget {
         ),
       ),
       child: Text(
-        AppStrings.get('continue', currentLang),
+        AppStrings.get(context, 'continue'),
         style: TextStyle(
           fontSize: context.scaleSp(16),
           fontWeight: FontWeight.bold,
