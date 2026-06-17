@@ -36,9 +36,11 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # Backend & Network
-  supabase_flutter: ^2.14.1
   dio: ^5.9.2
   dio_cache_interceptor: ^4.0.6 # Bộ nhớ đệm API phục vụ chế độ offline
+  firebase_core: ^4.10.0
+  firebase_auth: ^6.5.2
+  cloud_firestore: ^6.5.0
 
   # State Management (Quản lý trạng thái)
   flutter_bloc: ^9.1.1
