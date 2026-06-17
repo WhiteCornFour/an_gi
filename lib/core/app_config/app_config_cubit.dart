@@ -16,7 +16,8 @@ class AppConfigState {
   }) {
     return AppConfigState(
       isLanguageSelected: isLanguageSelected ?? this.isLanguageSelected,
-      isOnboardingCompleted: isOnboardingCompleted ?? this.isOnboardingCompleted,
+      isOnboardingCompleted:
+          isOnboardingCompleted ?? this.isOnboardingCompleted,
     );
   }
 
@@ -50,7 +51,8 @@ class AppConfigCubit extends HydratedCubit<AppConfigState> {
   }
 
   @override
-  AppConfigState? fromJson(Map<String, dynamic> json) => AppConfigState.fromMap(json);
+  AppConfigState? fromJson(Map<String, dynamic> json) =>
+      AppConfigState.fromMap(json);
 
   @override
   Map<String, dynamic>? toJson(AppConfigState state) => state.toMap();

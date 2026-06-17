@@ -1,4 +1,3 @@
-
 import 'package:an_gi/features/meal_plan/data/models/meal_model.dart';
 
 class MealPlanState {
