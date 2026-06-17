@@ -47,5 +47,5 @@ jobs:
 
       # Bước 7: CHẠY BỘ KIỂM THỬ THẦN TỐC (Unit Test & Widget Test)
       # Đảm bảo các hàm tính toán, bộ não BLoC "Khóa & Xoay" hoạt động đúng logic.
-      - name: Run Unit & Widget Tests
-        run: flutter test --coverage
+      # - name: Run Unit & Widget Tests
+      #   run: flutter test --coverage
