@@ -57,7 +57,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
                   // Tái sử dụng linh kiện dùng chung vô cùng mượt mà
                   CustomTextField(
-                    context: context,
                     label: AppStrings.get(context, 'email_label'),
                     hint: AppStrings.get(context, 'email_hint'),
                     controller: _emailController,

@@ -53,7 +53,6 @@ class _AuthPageState extends State<AuthPage> {
                   _HeaderSection(context: context),
                   SizedBox(height: AppSizes.spaceX(context) * 2),
                   CustomTextField(
-                    context: context,
                     label: AppStrings.get(context, 'email_label'),
                     hint: AppStrings.get(context, 'email_hint'),
                     controller: _emailController,
@@ -68,7 +67,6 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   SizedBox(height: AppSizes.spaceM(context)),
                   CustomTextField(
-                    context: context,
                     label: AppStrings.get(context, 'password_label'),
                     hint: AppStrings.get(context, 'password_hint'),
                     controller: _passwordController,

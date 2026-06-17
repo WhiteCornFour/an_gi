@@ -59,6 +59,13 @@ class AuthStrings {
       'send_request_button': 'GỬI MÃ XÁC NHẬN',
       'back_to_login': 'Quay lại đăng nhập',
       'success_send_email': 'Liên kết khôi phục đã được gửi vào email của bạn!',
+      //Erors
+      'error_email_already_in_use':
+          'Email này đã được đăng ký bởi tài khoản khác.',
+      'error_invalid_email': 'Địa chỉ email không đúng định dạng.',
+      'error_weak_password':
+          'Mật khẩu quá yếu, vui lòng chọn mật khẩu mạnh hơn.',
+      'error_unknown': 'Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.',
     },
     'en': {
       'app_name': 'What to Eat?',
@@ -120,6 +127,12 @@ class AuthStrings {
       'back_to_login': 'Back to login',
       'success_send_email':
           'A password reset link has been sent to your email!',
+      //Erors
+      'error_email_already_in_use':
+          'This email is already registered by another account.',
+      'error_invalid_email': 'The email address is badly formatted.',
+      'error_weak_password': 'The password is too weak.',
+      'error_unknown': 'An unknown error occurred. Please try again later.',
     },
   };
 }

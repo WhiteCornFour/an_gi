@@ -4,7 +4,6 @@ import '../theme/app_sizes.dart';
 import '../theme/app_text_styles.dart';
 
 class CustomTextField extends StatelessWidget {
-  final BuildContext context;
   final String label;
   final String hint;
   final TextEditingController controller;
@@ -12,11 +11,12 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final IconData prefixIcon;
   final Widget? suffixIcon;
+  final bool
+  enabled; // Thêm cờ trạng thái đóng/mở khóa khi hệ thống loading API
   final String? Function(String?)? validator;
 
   const CustomTextField({
     super.key,
-    required this.context,
     required this.label,
     required this.hint,
     required this.controller,
@@ -24,6 +24,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     required this.prefixIcon,
     this.suffixIcon,
+    this.enabled = true, // Mặc định luôn mở khóa để nhập liệu bình thường
     this.validator,
   });
 
@@ -34,28 +35,34 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: AppTextStyles.bodyBold(
-            context,
-          ).copyWith(color: AppColors.textPrimary),
+          style: AppTextStyles.bodyBold(context).copyWith(
+            color: enabled ? AppColors.textPrimary : AppColors.textSecondary,
+          ),
         ),
         SizedBox(height: AppSizes.spaceS(context)),
         TextFormField(
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
-          style: AppTextStyles.bodyMedium(
-            context,
-          ).copyWith(color: AppColors.textPrimary),
+          enabled: enabled, // Áp dụng trực tiếp cờ khóa tương tác hệ thống
+          style: AppTextStyles.bodyMedium(context).copyWith(
+            color: enabled ? AppColors.textPrimary : AppColors.textSecondary,
+          ),
           validator: validator,
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: AppTextStyles.bodyMedium(
               context,
             ).copyWith(color: AppColors.textHint),
-            prefixIcon: Icon(prefixIcon, color: AppColors.textSecondary),
+            prefixIcon: Icon(
+              prefixIcon,
+              color: enabled ? AppColors.textSecondary : AppColors.textHint,
+            ),
             suffixIcon: suffixIcon,
             filled: true,
-            fillColor: Colors.white,
+            fillColor: enabled
+                ? Colors.white
+                : const Color(0xFFF5F5F5), // Đổi nền xám nhẹ khi bị khóa
             contentPadding: EdgeInsets.symmetric(
               vertical: AppSizes.spaceM(context),
               horizontal: AppSizes.spaceM(context),
@@ -67,6 +74,10 @@ class CustomTextField extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.radiusM(context)),
               borderSide: const BorderSide(color: AppColors.borderLight),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppSizes.radiusM(context)),
+              borderSide: const BorderSide(color: Color(0xFFE0E0E0)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.radiusM(context)),

@@ -1,5 +1,7 @@
 import 'package:an_gi/core/app_config/app_config_cubit.dart';
 import 'package:an_gi/core/localization/language_cubit.dart';
+import 'package:an_gi/features/auth/data/services/firebase_auth_service.dart';
+import 'package:an_gi/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:an_gi/features/auth/presentation/pages/splash_page.dart';
 import 'package:an_gi/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,6 +40,12 @@ class AnGiApp extends StatelessWidget {
       providers: [
         BlocProvider<LanguageCubit>(create: (context) => LanguageCubit()),
         BlocProvider<AppConfigCubit>(create: (context) => AppConfigCubit()),
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(
+            authService:
+                FirebaseAuthService(), // Khởi tiêm dịch vụ Firebase Auth
+          ),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
