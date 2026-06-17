@@ -17,7 +17,7 @@ class AuthStrings {
       'onboarding_title_3': 'Đi Chợ Thông Minh',
       'onboarding_desc_3':
           'Tự động gom và cộng dồn nguyên liệu thành danh sách checklist tiện lợi. Đặc biệt, mất mạng ở chợ app vẫn chạy mượt mà.',
-      //login
+      //Login
       'login_title': 'Chào Mừng Trở Lại!',
       'login_subtitle':
           'Đăng nhập để tiếp tục lên thực đơn chống ngán cùng Trợ thủ Ăn gì?',
@@ -31,6 +31,18 @@ class AuthStrings {
       'register_now': 'Đăng ký ngay',
       'invalid_email': 'Email không đúng định dạng',
       'empty_password': 'Mật khẩu không được để trống',
+      //Register
+      'register_title': 'Tạo Tài Khoản Mới',
+      'register_subtitle': 'Đăng ký ngay để trợ thủ "Ăn gì?" thiết kế thực đơn cá nhân hóa cho gia đình bạn!',
+      'name_label': 'Họ và tên',
+      'name_hint': 'Nhập họ và tên của bạn...',
+      'confirm_password_label': 'Xác nhận mật khẩu',
+      'confirm_password_hint': 'Nhập lại mật khẩu...',
+      'register_button': 'ĐĂNG KÝ NGAY',
+      'already_account': 'Đã có tài khoản? ',
+      'login_now': 'Đăng nhập ngay',
+      'empty_name': 'Họ và tên không được để trống',
+      'password_not_match': 'Mật khẩu xác nhận không trùng khớp',
     },
     'en': {
       'app_name': 'What to Eat?',
@@ -49,7 +61,7 @@ class AuthStrings {
       'onboarding_title_3': 'Smart Shopping List',
       'onboarding_desc_3':
           'Automatically gather and aggregate ingredients into a convenient checklist. Works flawlessly even offline.',
-      //login
+      //Login
       'login_title': 'Welcome Back!',
       'login_subtitle':
           'Log in to continue planning exciting meals with "What to Eat?" Assistant',
@@ -63,6 +75,19 @@ class AuthStrings {
       'register_now': 'Register now',
       'invalid_email': 'Invalid email format',
       'empty_password': 'Password cannot be empty',
+      //Register
+      'register_title': 'Create New Account',
+      'register_subtitle':
+          'Register now to let "What to Eat?" design personalized menus for your family!',
+      'name_label': 'Full Name',
+      'name_hint': 'Enter your full name...',
+      'confirm_password_label': 'Confirm Password',
+      'confirm_password_hint': 'Re-enter your password...',
+      'register_button': 'REGISTER NOW',
+      'already_account': 'Already have an account? ',
+      'login_now': 'Log in now',
+      'empty_name': 'Full name cannot be empty',
+      'password_not_match': 'Confirm password does not match',
     },
   };
 }

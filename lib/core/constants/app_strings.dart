@@ -1,4 +1,4 @@
-import 'package:an_gi/core/constants/auth_strings.dart';
+import 'package:an_gi/features/auth/presentation/constants/auth_strings.dart';
 import 'package:an_gi/core/constants/meal_plan_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,34 +1,41 @@
-import 'package:an_gi/core/components/custom_text_field.dart';
-import 'package:an_gi/features/auth/presentation/pages/register_page.dart';
+// lib/features/auth/presentation/pages/register_page.dart
+
 import 'package:flutter/material.dart';
+import '../../../../core/components/custom_text_field.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
-class AuthPage extends StatefulWidget {
-  const AuthPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
-  void _handleLogin() {
+  void _handleRegister() {
     if (_formKey.currentState!.validate()) {
-      // Logic BLoC sẽ được đấu nối tại đây ở bước kế tiếp
+      // TODO: Gửi sự kiện RegisterEvent sang AuthBloc ở bước tiếp theo
     }
   }
 
@@ -48,9 +55,27 @@ class _AuthPageState extends State<AuthPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: AppSizes.spaceX(context) * 2),
+                  SizedBox(height: AppSizes.spaceM(context)),
+                  _BackButton(context: context),
+                  SizedBox(height: AppSizes.spaceM(context)),
                   _HeaderSection(context: context),
-                  SizedBox(height: AppSizes.spaceX(context) * 2),
+                  SizedBox(height: AppSizes.spaceL(context)),
+
+                  // Ứng dụng linh kiện dùng chung CustomTextField cực kỳ gọn gàng
+                  CustomTextField(
+                    context: context,
+                    label: AppStrings.get(context, 'name_label'),
+                    hint: AppStrings.get(context, 'name_hint'),
+                    controller: _nameController,
+                    prefixIcon: Icons.person_outline,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppStrings.get(context, 'empty_name');
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: AppSizes.spaceM(context)),
                   CustomTextField(
                     context: context,
                     label: AppStrings.get(context, 'email_label'),
@@ -80,11 +105,9 @@ class _AuthPageState extends State<AuthPage> {
                             : Icons.visibility_off,
                         color: AppColors.textSecondary,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
+                      onPressed: () => setState(
+                        () => _isPasswordVisible = !_isPasswordVisible,
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -93,11 +116,38 @@ class _AuthPageState extends State<AuthPage> {
                       return null;
                     },
                   ),
-                  _ForgotPasswordButton(context: context),
-                  SizedBox(height: AppSizes.spaceL(context)),
-                  _LoginButton(context: context, onPressed: _handleLogin),
+                  SizedBox(height: AppSizes.spaceM(context)),
+                  CustomTextField(
+                    context: context,
+                    label: AppStrings.get(context, 'confirm_password_label'),
+                    hint: AppStrings.get(context, 'confirm_password_hint'),
+                    controller: _confirmPasswordController,
+                    obscureText: !_isConfirmPasswordVisible,
+                    prefixIcon: Icons.lock_clock_outlined,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isConfirmPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: AppColors.textSecondary,
+                      ),
+                      onPressed: () => setState(
+                        () => _isConfirmPasswordVisible =
+                            !_isConfirmPasswordVisible,
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value != _passwordController.text) {
+                        return AppStrings.get(context, 'password_not_match');
+                      }
+                      return null;
+                    },
+                  ),
                   SizedBox(height: AppSizes.spaceX(context)),
-                  _RegisterFooter(context: context),
+                  _RegisterButton(context: context, onPressed: _handleRegister),
+                  SizedBox(height: AppSizes.spaceX(context)),
+                  _LoginFooter(context: context),
+                  SizedBox(height: AppSizes.spaceM(context)),
                 ],
               ),
             ),
@@ -108,7 +158,23 @@ class _AuthPageState extends State<AuthPage> {
   }
 }
 
-// --- CÁC SUB-WIDGETS ĐƯỢC BÓC TÁCH RIÊNG BIỆT ---
+// --- CÁC LOCAL PRIVATE WIDGETS ---
+
+class _BackButton extends StatelessWidget {
+  final BuildContext context;
+  const _BackButton({required this.context});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => Navigator.pop(context),
+      icon: const Icon(
+        Icons.arrow_back_ios_new_rounded,
+        color: AppColors.textPrimary,
+      ),
+    );
+  }
+}
 
 class _HeaderSection extends StatelessWidget {
   final BuildContext context;
@@ -119,29 +185,15 @@ class _HeaderSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: EdgeInsets.all(AppSizes.spaceM(context)),
-          decoration: const BoxDecoration(
-            color:
-                AppColors.primaryOpacity10, // ĐÃ FIX: Thay thế withOpacity(0.1)
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            Icons.restaurant_menu_rounded,
-            size: AppSizes.iconL(context),
-            color: AppColors.primary,
-          ),
-        ),
-        SizedBox(height: AppSizes.spaceM(context)),
         Text(
-          AppStrings.get(context, 'login_title'),
+          AppStrings.get(context, 'register_title'),
           style: AppTextStyles.heading1(
             context,
           ).copyWith(color: AppColors.textPrimary),
         ),
         SizedBox(height: AppSizes.spaceS(context)),
         Text(
-          AppStrings.get(context, 'login_subtitle'),
+          AppStrings.get(context, 'register_subtitle'),
           style: AppTextStyles.bodyMedium(
             context,
           ).copyWith(color: AppColors.textSecondary),
@@ -151,33 +203,10 @@ class _HeaderSection extends StatelessWidget {
   }
 }
 
-class _ForgotPasswordButton extends StatelessWidget {
-  final BuildContext context;
-  const _ForgotPasswordButton({required this.context});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: () {
-          // Xử lý quên mật khẩu
-        },
-        child: Text(
-          AppStrings.get(context, 'forgot_password'),
-          style: AppTextStyles.bodyBold(
-            context,
-          ).copyWith(color: AppColors.primary),
-        ),
-      ),
-    );
-  }
-}
-
-class _LoginButton extends StatelessWidget {
+class _RegisterButton extends StatelessWidget {
   final BuildContext context;
   final VoidCallback onPressed;
-  const _LoginButton({required this.context, required this.onPressed});
+  const _RegisterButton({required this.context, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -187,17 +216,18 @@ class _LoginButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors
+              .secondary, // Dùng màu xanh lá an tâm, tin cậy cho Đăng ký
           elevation: 4,
           shadowColor: const Color(
-            0x66E65100,
-          ), // ĐÃ FIX: Thay thế AppColors.primary.withOpacity(0.4) bằng mã màu tĩnh cứng
+            0x662E7D32,
+          ), // Mã màu tĩnh cứng thay thế withOpacity
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSizes.radiusL(context)),
           ),
         ),
         child: Text(
-          AppStrings.get(context, 'login_button'),
+          AppStrings.get(context, 'register_button'),
           style: AppTextStyles.buttonText(
             context,
           ).copyWith(color: Colors.white),
@@ -207,9 +237,9 @@ class _LoginButton extends StatelessWidget {
   }
 }
 
-class _RegisterFooter extends StatelessWidget {
+class _LoginFooter extends StatelessWidget {
   final BuildContext context;
-  const _RegisterFooter({required this.context});
+  const _LoginFooter({required this.context});
 
   @override
   Widget build(BuildContext context) {
@@ -217,23 +247,18 @@ class _RegisterFooter extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          AppStrings.get(context, 'no_account'),
+          AppStrings.get(context, 'already_account'),
           style: AppTextStyles.bodyMedium(
             context,
           ).copyWith(color: AppColors.textSecondary),
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const RegisterPage()),
-            );
-          },
+          onTap: () => Navigator.pop(context),
           child: Text(
-            AppStrings.get(context, 'register_now'),
+            AppStrings.get(context, 'login_now'),
             style: AppTextStyles.bodyBold(
               context,
-            ).copyWith(color: AppColors.secondary),
+            ).copyWith(color: AppColors.primary),
           ),
         ),
       ],
